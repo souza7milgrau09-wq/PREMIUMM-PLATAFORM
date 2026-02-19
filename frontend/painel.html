@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Painel</title>
+</head>
+<body>
+
+<h1>Área Logada</h1>
+<p id="mensagem"></p>
+<button onclick="logout()">Sair</button>
+
+<script>
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.href = "login.html";
+}
+
+fetch("http://localhost:3000/painel", {
+  headers: {
+    "Authorization": token
+  }
+})
+.then(res => res.json())
+.then(data => {
+  document.getElementById("mensagem").innerText = data.message;
+})
+.catch(() => {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+});
+
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
